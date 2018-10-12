@@ -1,0 +1,43 @@
+@(timeline: com.github.mather.sample.model.Timeline)
+
+@displayTweet(tweet: com.github.mather.sample.model.Tweet) = {
+    <div class="tweet">
+        <div class="tweet-header">
+            <div class="author-name">@{
+                tweet.author.displayName
+            }</div>
+            <div class="tweet-createdAt">@{
+                tweet.createdAt
+            }</div>
+        </div>
+        <div class="tweet-message">
+            @Html(tweet.messageText.replace("\n", "<br>"))
+        </div>
+    </div>
+}
+
+@layouts.html.default(title = "Timeline", headline = "MyTwitter") {
+    <h2>New Tweet</h2>
+
+    <form action="/" method="post">
+        <div class="form-group">
+            <label for="tweet-message">Message</label>
+            <textarea id="tweet-message" name="message" class="form-control" placeholder="Something to tweet..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <h2>Timeline</h2>
+
+    @if(timeline.isEmpty) {
+        <div class="alert alert-light">No tweets to show!</div>
+    } else {
+        <ul>
+        @for(tweet <- timeline.tweets.list) {
+            <li>
+            @displayTweet(tweet)
+            </li>
+        }
+        </ul>
+    }
+}
