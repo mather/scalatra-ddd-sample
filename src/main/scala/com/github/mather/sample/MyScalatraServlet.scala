@@ -16,14 +16,17 @@ class MyScalatraServlet extends ScalatraServlet {
   }
 
   post("/") {
+    // TODO: Author login
     val author = Author(AuthorId("sample"), AuthorName("Sample User"))
     val message = Message.create(params("message"))
-
     val newTweet = application.postNewTweet(author, message)
 
     newTweet match {
-      case Some(tweet) => views.html.index(application.showGlobalTimeline())
-      case None => views.html.index(application.showGlobalTimeline()) // TODO: show error
+      case Some(tweet) => redirect("/")
+      case None => {
+        val timeline = application.showGlobalTimeline()
+        views.html.index(timeline, Option("Failed to tweet."))
+      }
     }
   }
 

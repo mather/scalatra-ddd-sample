@@ -1,18 +1,16 @@
-@(timeline: com.github.mather.sample.model.Timeline)
+@(timeline: com.github.mather.sample.model.Timeline, error: Option[String] = None)
 
 @displayTweet(tweet: com.github.mather.sample.model.Tweet) = {
-    <div class="tweet">
-        <div class="tweet-header">
-            <div class="author-name">@{
-                tweet.author.displayName
-            }</div>
-            <div class="tweet-createdAt">@{
-                tweet.createdAt
-            }</div>
-        </div>
-        <div class="tweet-message">
-            @Html(tweet.messageText.replace("\n", "<br>"))
-        </div>
+    <div class="tweet-header d-flex w-100 justify-content-between">
+        <div class="tweet-author-name">@{
+            tweet.author.displayName
+        }</div>
+        <div class="tweet-createdAt">@{
+            tweet.createdAt
+        }</div>
+    </div>
+    <div class="tweet-message d-flex w-100 justify-content-between">
+        @Html(tweet.messageText.replace("\n", "<br>"))
     </div>
 }
 
@@ -32,9 +30,9 @@
     @if(timeline.isEmpty) {
         <div class="alert alert-light">No tweets to show!</div>
     } else {
-        <ul>
+        <ul class="list-group">
         @for(tweet <- timeline.tweets.list) {
-            <li>
+            <li class="list-group-item list-group-item-action flex-column align-items-start">
             @displayTweet(tweet)
             </li>
         }
